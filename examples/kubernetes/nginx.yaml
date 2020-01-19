@@ -5,27 +5,29 @@ metadata:
   labels:
     name: data-nfsplugin
 spec:
+  storageClassName: nfs-csi
   accessModes:
   - ReadWriteMany
   capacity:
-    storage: 100Gi
+    storage: 10Gi
   csi:
     driver: csi-nfsplugin
     volumeHandle: data-id
     volumeAttributes: 
-      server: 127.0.0.1
-      share: /export
+      server: 172.18.0.4
+      share: /var/nfs/exports
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: data-nfsplugin
 spec:
+  storageClassName: nfs-csi
   accessModes:
   - ReadWriteMany
   resources:
     requests:
-      storage: 100Gi
+      storage: 10Gi
   selector:
     matchExpressions:
     - key: name
@@ -38,7 +40,7 @@ metadata:
   name: nginx 
 spec:
   containers:
-  - image: maersk/nginx
+  - image: nginx
     imagePullPolicy: Always
     name: nginx
     ports:
